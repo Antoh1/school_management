@@ -1,0 +1,103 @@
+<odoo>
+  <data>
+
+     <!-- search course by title and description -->
+    <record id="course_details_search" model="ir.ui.view">
+        <field name="name">course.search</field>
+        <field name="model">school.course</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+            </search>
+        </field>
+    </record>
+    <!-- explicit tree view definition -->
+
+    <record model="ir.ui.view" id="school_course_list">
+      <field name="name">school_course_list</field>
+      <field name="model">school.course</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="description"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- explicit tree view definition -->
+    <record model="ir.ui.view" id="school_course_form">
+      <field name="name">school_course.form</field>
+      <field name="model">school.course</field>
+      <field name="arch" type="xml">
+        <form>
+            <!-- <header>
+                <button string="Confirm" type="object" name="action_confirm"
+                states="draft" class="oe_highlight" />
+                <button string="Mark as done" type="object" name="action_done"
+                states="confirmed" class="oe_highlight"/>
+            </header>     -->
+            <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only" string="Title Name" />
+              <h1><field name="name" /></h1>
+            </div>
+                <group>
+                  <group colspan="4">
+                      <field name="name"/>
+                  </group>
+                </group>
+                <separator string="Details" colspan="2"/>
+                <notebook colspan="4">
+                  <page string="Description">
+                    <field name="description" nolabel="1"/>
+                  </page>
+                </notebook>
+            </sheet>
+        </form>
+      </field>  
+    </record>
+
+    <!-- action opening views on models -->
+
+    <record model="ir.actions.act_window" id="school_course_list_action">
+      <field name="name">School Courses</field>
+      <field name="res_model">school.course</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+
+    <record model="ir.actions.server" id="school_action_server">
+      <field name="name">School Course S</field>
+      <field name="model_id" ref="model_school_course"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="SCHOOL" id="school_menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Courses" id="school_course" parent="school_menu_root"/>
+    <menuitem name="Tutors" id="school_course_tutors" parent="school_menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="Course List" id="school_menu_course" parent="school_course"
+              action="school_course_list_action"/>
+    <menuitem name="Server to list" id="school_management" parent="school_course_tutors"
+              action="school_action_server"/>
+
+  </data>
+</odoo>

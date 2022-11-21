@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+          <record id="english_one" model="school.course">
+            <field name="name">English</field>
+            <field name="description">English subject for form One</field>
+          </record>
+
+          <record id="math_one" model="school.course">
+            <field name="name">Mathematics</field>
+            <field name="description">Maths subject for form one</field>
+          </record>
+
+          <record id="kiswahili_one" model="school.course">
+            <field name="name">Kiswahili</field>
+            <field name="description">Kiswahili Subject for form One</field>
+          </record>
+
+    </data>
+</odoo>
