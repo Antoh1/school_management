@@ -1,6 +1,29 @@
 <odoo>
   <data>
 
+      <!-- attendee list tree view definition -->
+    <record model="ir.ui.view" id="attendee_list">
+      <field name="name">attendee_list tree</field>
+      <field name="model">res.partner</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>  
+      </field>
+    </record>
+
+    <!-- action opening attendee list -->
+    <record id="attendee_action" model="ir.actions.act_window">
+      <field name="name">Attendees</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- menu for the course sessions -->
+    <menuitem name="Attendees" id="attendee_root" parent="school_menu_root"/>
+    <menuitem name="Attendee List" id="attendee_sub_menu" parent="attendee_root"
+              action="attendee_action"/>
+
      <!-- search course by title and description -->
     <record id="course_details_search" model="ir.ui.view">
         <field name="name">course.search</field>
@@ -9,11 +32,12 @@
             <search>
                 <field name="name"/>
                 <field name="description"/>
+                <field name="responsible_user"/>
             </search>
         </field>
     </record>
-    <!-- explicit tree view definition -->
-
+    
+    <!-- courses tree view definition -->
     <record model="ir.ui.view" id="school_course_list">
       <field name="name">school_course_list</field>
       <field name="model">school.course</field>
@@ -21,11 +45,12 @@
         <tree>
             <field name="name"/>
             <field name="description"/>
+            <field name="tutor"/>
         </tree>
       </field>
     </record>
 
-    <!-- explicit tree view definition -->
+    <!-- courses form view definition -->
     <record model="ir.ui.view" id="school_course_form">
       <field name="name">school_course.form</field>
       <field name="model">school.course</field>
@@ -44,7 +69,8 @@
             </div>
                 <group>
                   <group colspan="4">
-                      <field name="name"/>
+                      <field name="tutor"/>
+                      <field name="responsible_user"/>
                   </group>
                 </group>
                 <separator string="Details" colspan="2"/>
@@ -57,6 +83,81 @@
         </form>
       </field>  
     </record>
+    
+
+    <!-- course sessions tree view definition -->
+    <record model="ir.ui.view" id="course_session_list_tree">
+      <field name="name">course_session_list</field>
+      <field name="model">school.course</field>
+      <field name="inherit_id" ref="school_course_form"/>
+      <field name="arch" type="xml">
+         <field name="description" position="replace">
+            <field name="session_list"/>
+         </field>
+      </field>
+    </record>
+
+    <!-- session tree view definition -->
+
+    <record model="ir.ui.view" id="school_session_list">
+      <field name="name">school_session_list</field>
+      <field name="model">course.session</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="course_id"/>
+            <field name="seats"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- session form view definition -->
+    <record model="ir.ui.view" id="school_session_form">
+      <field name="name">school_session.form</field>
+      <field name="model">course.session</field>
+      <field name="arch" type="xml">
+        <form>
+            <sheet>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only" string="Title Name" />
+              <h1><field name="name" /></h1>
+            </div>
+                <group>
+                  <group colspan="6">
+                      <!-- <field name="tutor"/> -->
+                      <field name="course_id"/>
+                      <field name="session_start"/>
+                  </group>
+                  <group colspan="4">
+                      <field name="duration"/>
+                      <field name="session_end"/>
+                      <field name="seats"/>
+                      <field name="attendee_list"/>
+                  </group>
+                </group>
+                <separator string="Details" colspan="2"/>
+                <notebook colspan="4">
+                  <page string="Description">
+                    <field name="description" nolabel="0"/>
+                  </page>
+                </notebook>
+            </sheet>
+        </form>
+      </field>  
+    </record>
+
+
+    <!-- action opening session views -->
+    <record id="session_action" model="ir.actions.act_window">
+      <field name="name">Course Sessions</field>
+      <field name="res_model">course.session</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- menu for the course sessions -->
+    <menuitem name="Sessions" id="session_root" parent="school_menu_root"/>
+    <menuitem name="Sessions List" id="course_session" parent="session_root"
+              action="session_action"/>
 
     <!-- action opening views on models -->
 
